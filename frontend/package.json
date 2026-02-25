@@ -1,0 +1,12 @@
+{
+  "name": "dontpad-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot server.js",
+    "start": "bun run server.js"
+  },
+  "dependencies": {
+    "bun": "^1.3.8"
+  }
+}
