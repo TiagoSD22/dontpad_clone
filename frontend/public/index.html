@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dontpad - Realtime Collaborative Notepad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        #nameInput {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #nameInput input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        #nameInput input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        #nameInput button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #nameInput button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #nameInput button:active {
+            transform: translateY(0);
+        }
+
+        #editorSection {
+            display: none;
+        }
+
+        #editorSection.active {
+            display: block;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .editor-title {
+            font-size: 1.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .status-indicator.connected {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        #editor {
+            width: 100%;
+            min-height: 400px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        #editor:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .info {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .info strong {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            #nameInput {
+                flex-direction: column;
+            }
+
+            #nameInput button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>📝 Dontpad</h1>
+                <p>Simple, realtime collaborative notepad</p>
+            </div>
+            <div class="content">
+                <!-- Name Input Section -->
+                <div id="nameInput">
+                    <input 
+                        type="text" 
+                        id="dontpadName" 
+                        placeholder="Enter dontpad name (e.g., mynotes)"
+                        autocomplete="off"
+                    >
+                    <button id="openBtn">Open</button>
+                </div>
+
+                <!-- Editor Section -->
+                <div id="editorSection">
+                    <div class="editor-header">
+                        <div class="editor-title" id="currentName"></div>
+                        <div class="status">
+                            <div class="status-indicator" id="statusIndicator"></div>
+                            <span id="statusText">Disconnected</span>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="editor" 
+                        placeholder="Start typing... Changes are saved automatically and synced in realtime."
+                    ></textarea>
+                    <div class="info">
+                        <strong>💡 Tip:</strong> Share this dontpad name with others to collaborate in realtime. 
+                        All changes are automatically saved and synchronized.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/client.js"></script>
+</body>
+</html>
